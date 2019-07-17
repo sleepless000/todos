@@ -7,6 +7,7 @@ const Grid = styled.div`
   margin: 1rem;
   display: grid;
   grid-template-columns: 3fr 1fr 1fr 1fr;
+
   font-size: 1.1rem;
 `;
 const StyledLink = styled(Link)`

@@ -3,11 +3,11 @@ import TextInput from './TextInput';
 import styled from 'styled-components';
 
 const Form = styled.form`
-  height: 50vh;
+  height: 70vh;
   display: grid;
   align-items: center;
   justify-items: center;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
 `;
 
 const Button = styled.div`
