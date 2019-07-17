@@ -10,11 +10,20 @@ const Grid = styled.div`
   font-size: 1.1rem;
 `;
 const StyledLink = styled(Link)`
-  place-self: center end;
+  place-self: center;
   text-decoration: none;
   color: blue;
   text-transform: uppercase;
   letter-spacing: 0.15rem;
+`;
+
+const Field = styled.div`
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 1rem;
+  text-decoration: bold;
+
+  ${({ completed }) => (completed ? 'color: darkblue;' : 'color: green;')}
 `;
 
 const DeleteButton = styled.div`
@@ -35,7 +44,9 @@ export default function Todo({ id, title, completed, deleteTodo }) {
   return (
     <Grid>
       <div>{title}</div>
-      <div>{completed ? 'completed' : 'not completed'}</div>
+      <Field completed={completed}>
+        {completed ? 'completed' : 'not completed'}
+      </Field>
 
       <StyledLink to={path}>edit</StyledLink>
 

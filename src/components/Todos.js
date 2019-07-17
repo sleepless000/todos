@@ -8,7 +8,7 @@ import Spinner from './Spinner/Spinner';
 
 const Wrapper = styled.div`
   margin: 2rem auto;
-  width: 1100px;
+  width: 85%;
 `;
 
 const Title = styled.h1`
