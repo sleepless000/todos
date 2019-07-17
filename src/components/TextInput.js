@@ -7,6 +7,10 @@ const Input = styled.textarea`
   border: 2px solid black;
   padding: 0.2rem;
   font-size: 1.5rem;
+  @media (max-width: 990px) {
+    height: 4em;
+    width: 7em;
+  }
 `;
 
 const TextInput = ({ name, onChange, value }) => {
