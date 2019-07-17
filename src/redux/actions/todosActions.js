@@ -7,8 +7,8 @@ const loadTodosSuccess = todos => ({
   todos
 });
 
-export function deleteTodo(id) {
-  return { type: types.DELETE_TODO_OPTIMISTIC, id };
+export function deleteTodoSuccess(id) {
+  return { type: types.DELETE_TODO_SUCCESS, id };
 }
 
 export function createTodoSuccess(todo) {
@@ -19,20 +19,18 @@ export function updateTodoSuccess(todo) {
   return { type: types.UPDATE_TODO_SUCCESS, todo };
 }
 
-export function saveTodo(todo) {
-  return async dispatch => {
-    dispatch(beginApiCall());
-    try {
-      const savedTodo = await todosApi.saveTodo(todo);
-      todo.id
-        ? dispatch(updateTodoSuccess(savedTodo))
-        : dispatch(createTodoSuccess(savedTodo));
-    } catch (error) {
-      dispatch(apiCallError(error));
-      throw error;
-    }
-  };
-}
+export const saveTodo = todo => async dispatch => {
+  dispatch(beginApiCall());
+  try {
+    const savedTodo = await todosApi.saveTodo(todo);
+    todo.id
+      ? dispatch(updateTodoSuccess(savedTodo))
+      : dispatch(createTodoSuccess(savedTodo));
+  } catch (error) {
+    dispatch(apiCallError(error));
+    throw error;
+  }
+};
 
 export const loadTodos = () => async dispatch => {
   dispatch(beginApiCall());
@@ -45,9 +43,13 @@ export const loadTodos = () => async dispatch => {
   }
 };
 
-export function deleteId(id) {
-  return function(dispatch) {
-    dispatch(deleteTodo(id));
-    return todosApi.deleteTodo(id);
-  };
-}
+export const deleteTodo = id => async dispatch => {
+  dispatch(beginApiCall());
+  try {
+    await todosApi.deleteTodo(id);
+    dispatch(deleteTodoSuccess(id));
+  } catch (error) {
+    dispatch(apiCallError(error));
+    throw error;
+  }
+};

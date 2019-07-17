@@ -33,9 +33,12 @@ const DeleteButton = styled.div`
   text-transform: uppercase;
   letter-spacing: 0.15rem;
   cursor: pointer;
+  &[disabled] {
+    pointer-events: none;
+  }
 `;
 
-export default function Todo({ id, title, completed, deleteTodo }) {
+export default function Todo({ id, title, completed, deleteTodo, loading }) {
   const handleDelete = () => {
     deleteTodo(id);
     toast.error('Todo with ID ' + id + ' was deleted');
@@ -47,10 +50,10 @@ export default function Todo({ id, title, completed, deleteTodo }) {
       <Field completed={completed}>
         {completed ? 'completed' : 'not completed'}
       </Field>
-
       <StyledLink to={path}>edit</StyledLink>
-
-      <DeleteButton onClick={handleDelete}>delete</DeleteButton>
+      <DeleteButton disabled={loading} onClick={handleDelete}>
+        delete
+      </DeleteButton>
     </Grid>
   );
 }
