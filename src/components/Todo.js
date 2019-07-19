@@ -39,19 +39,19 @@ const DeleteButton = styled.div`
   }
 `;
 
-export default function Todo({ id, title, completed, deleteTodo, loading }) {
+export default function({ id, title, completed, deleteTodo, loading }) {
   const handleDelete = () => {
     deleteTodo(id);
-    toast.error('Todo with ID ' + id + ' was deleted');
+    toast.success('Todo with ID ' + id + ' was deleted');
   };
-  const path = 'todo/' + id;
+
   return (
     <Grid>
       <div>{title}</div>
       <Field completed={completed}>
         {completed ? 'completed' : 'not completed'}
       </Field>
-      <StyledLink to={path}>edit</StyledLink>
+      <StyledLink to={`todo/${id}`}>edit</StyledLink>
       <DeleteButton disabled={loading} onClick={handleDelete}>
         delete
       </DeleteButton>

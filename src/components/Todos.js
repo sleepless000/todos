@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
+import styled from 'styled-components';
 import { loadTodos, deleteTodo } from '../redux/actions/todosActions';
 import Todo from './Todo';
-import styled from 'styled-components';
 
 const Wrapper = styled.div`
   margin: 2rem auto;
@@ -27,10 +27,11 @@ function Todos({ todos, loadTodos, deleteTodo, history, loading }) {
 
   useEffect(() => {
     if (todos.length === 0) {
-      loadTodos().catch(error => toast.error('Loading todos failed' + error));
+      loadTodos().catch(error => {
+        toast.error('Loading todos failed' + error);
+      });
     }
-    // eslint-disable-next-line
-  }, [todos]);
+  }, [todos, loadTodos]);
 
   return (
     <Wrapper>

@@ -1,13 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { GridLoader } from 'react-spinners';
 import { toast } from 'react-toastify';
+import styled from 'styled-components';
 import { loadTodos, saveTodo } from '../redux/actions/todosActions';
-import TodoForm from './TodoForm';
-import Spinner from './Spinner/Spinner';
+import EditTodoForm from './EditTodoForm';
 
-function TodoPage({ todos, loadTodos, saveTodo, loading, history, ...props }) {
+const Loader = styled.div`
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+function ManageTodo({
+  todos,
+  loadTodos,
+  saveTodo,
+  loading,
+  history,
+  ...props
+}) {
   const [todo, setTodo] = useState({ ...props.todo });
-  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     if (todos.length === 0) {
@@ -17,8 +31,7 @@ function TodoPage({ todos, loadTodos, saveTodo, loading, history, ...props }) {
     } else {
       setTodo({ ...props.todo });
     }
-    // eslint-disable-next-line
-  }, []);
+  }, [loadTodos, props.todo, todos.length]);
 
   const handleChange = event => {
     const { name, value } = event.target;
@@ -30,52 +43,42 @@ function TodoPage({ todos, loadTodos, saveTodo, loading, history, ...props }) {
 
   const handleSave = event => {
     event.preventDefault();
-    setSaving(true);
     saveTodo(todo)
       .then(() => {
         toast.success('Todo saved.');
         history.push('/courses');
       })
       .catch(error => {
-        toast.error('Error: ' + error);
-        setSaving(false);
+        toast.error('Edit todo not allowed by server', { autoClose: false });
+        setTimeout(() => {
+          history.push('/courses');
+        }, 1000);
       });
   };
 
   return todos.length === 0 || loading ? (
-    <Spinner />
+    <Loader>
+      <GridLoader color="black" size={25} margin="3px" />
+    </Loader>
   ) : (
-    <TodoForm
-      onChange={handleChange}
-      onSave={handleSave}
-      saving={saving}
-      todo={todo}
-    />
+    <EditTodoForm onChange={handleChange} onSave={handleSave} todo={todo} />
   );
 }
 
-export function getTodoById(todos, id) {
-  return (
-    todos.find(todo => {
-      return todo.id === +id;
-    }) || null
-  );
-}
+const getTodoById = (todos, id) => todos.find(todo => todo.id === id);
 
-function mapStateToProps(state, ownProps) {
-  const id = ownProps.match.params.id;
-  const todo =
-    id && state.todos.length > 0
-      ? getTodoById(state.todos, id)
-      : { title: '', completed: false };
+const mapStateToProps = (state, ownProps) => {
   return {
-    todo,
+    todo: getTodoById(state.todos, +ownProps.match.params.id) || {
+      title: '',
+      completed: false
+    },
     todos: state.todos,
     loading: state.apiCallsInProgress > 0
   };
-}
+};
 
 export default connect(
   mapStateToProps,
   { loadTodos, saveTodo }
-)(TodoPage);
+)(ManageTodo);
