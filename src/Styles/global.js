@@ -15,6 +15,6 @@ body {
   font-size: 100%;
   box-sizing: border-box;
   background: rgb(238,174,202);
-background: linear-gradient(90deg, rgba(238,174,202,1) 0%, rgba(148,221,233,0.3785889355742297) 100%);
+  background: linear-gradient(90deg, rgba(238,174,202,1) 0%, rgba(148,221,233,0.3785889355742297) 100%);
 }
 `;
